@@ -1,15 +1,43 @@
 const { User } = require('../models/user.model');
+const bcrypt = require('bcryptjs');
+const { AppError } = require('../utils/appError.util');
 
 const createUser = async (req, res, next) => {
-    const { name, email, password } = req.body;
+    const { APELLIDOS, NOMBRES, USUARIO, PASSWORD } = req.body;
+
+    const salt = await bcrypt.genSalt(12);
+    const hashPassword = await bcrypt.hash(PASSWORD, salt);
 
     const newUser = await User.create({
-        name,
-        email,
-        password,
+        APELLIDOS,
+        NOMBRES,
+        FECHANAC: '',
+        SEXO: 1,
+        DOC: 1,
+        ESTCIV: 2,
+        CARFAM: 2,
+        NUMHIJ: 3,
+        DIRECCION: '',
+        DISTRITO: '',
+        DPTO: '',
+        REFDIR: '',
+        TLF: '',
+        CEL: '',
+        EMAIL: '',
+        GRADOINS: 1,
+        CARGO: 2,
+        IDSUCURSAL: 4,
+        USUARIO,
+        PASSWORD: hashPassword,
+        IDESTADO: 10,
+        fecha_registro: '',
+        fecha_baja: '',
+        id_cartera: 20,
+        api_token: ''
     });
 
-    newUser.password = undefined;
+
+    // newUser.password = undefined;
 
     res.status(201).json({
         status: 'success',
@@ -35,18 +63,17 @@ const createUser = async (req, res, next) => {
 
 const login = async (req, res, next) => {
     const { usuario, password } = req.body;
-
     const user = await User.findOne({
         where: {
-            usuario,
+            USUARIO: usuario,
         },
     });
 
-    if (!user) return next(new AppError('Invalid credentials', 400))
+    if (!user) return next(new AppError('Invalid user', 400))
 
     const isPasswordValid = await bcrypt.compare(password, user.PASSWORD);
-
-    if (!isPasswordValid) return next(new AppError('Invalid credentials', 400))
+    console.log(isPasswordValid);
+    if (!isPasswordValid) return next(new AppError('Invalid password', 400))
 
     res.status(200).json({
         status: 'success',
@@ -63,7 +90,7 @@ const getAllUsers = async (req, res, next) => {
         users,
     });
 
-};  
+};
 
 module.exports = {
     createUser,
