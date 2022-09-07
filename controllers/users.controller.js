@@ -1,41 +1,48 @@
 const { User } = require('../models/user.model');
 const bcrypt = require('bcryptjs');
 const { AppError } = require('../utils/appError.util');
+const { catchAsync } = require('../utils/catchAsync.util');
+const jwt = require('jsonwebtoken');
+const dotenv = require('dotenv');
+// md5
+const md5 = require('md5');
 
-const createUser = async (req, res, next) => {
-    const { APELLIDOS, NOMBRES, USUARIO, PASSWORD } = req.body;
 
-    const salt = await bcrypt.genSalt(12);
-    const hashPassword = await bcrypt.hash(PASSWORD, salt);
+const createUser = catchAsync(async (req, res, next) => {
+    const { apellidos, nombres, fechanac, sexo, doc, estciv, carfam, numhij, direccion,
+        distrito, dpto, refdir, tlf, cel, email, gradoins, cargo, idsucursal, usuario, password,
+        idestado, fecha_registro, fecha_baja, id_cartera } = req.body;
+
+    // const salt = await bcrypt.genSalt(12);
+    // const hashPassword = await bcrypt.hash(PASSWORD, salt);
 
     const newUser = await User.create({
-        APELLIDOS,
-        NOMBRES,
-        FECHANAC: '',
-        SEXO: 1,
-        DOC: 1,
-        ESTCIV: 2,
-        CARFAM: 2,
-        NUMHIJ: 3,
-        DIRECCION: '',
-        DISTRITO: '',
-        DPTO: '',
-        REFDIR: '',
-        TLF: '',
-        CEL: '',
-        EMAIL: '',
-        GRADOINS: 1,
-        CARGO: 2,
-        IDSUCURSAL: 4,
-        USUARIO,
-        PASSWORD: hashPassword,
-        IDESTADO: 10,
-        fecha_registro: '',
-        fecha_baja: '',
-        id_cartera: 20,
-        api_token: ''
+        APELLIDOS: apellidos,
+        NOMBRES: nombres,
+        FECHANAC: fechanac,
+        SEXO: sexo,
+        DOC: doc,
+        ESTCIV: estciv,
+        CARFAM: carfam,
+        NUMHIJ: numhij,
+        DIRECCION: direccion,
+        DISTRITO: distrito,
+        DPTO: dpto,
+        REFDIR: refdir,
+        TLF: tlf,
+        CEL: cel,
+        EMAIL: email,
+        GRADOINS: gradoins,
+        CARGO: cargo,
+        IDSUCURSAL: idsucursal,
+        USUARIO: usuario,
+        PASSWORD: md5(password),
+        IDESTADO: idestado,
+        fecha_registro: fecha_registro,
+        fecha_baja: fecha_baja,
+        id_cartera: id_cartera,
+        api_token: "",
     });
-
 
     // newUser.password = undefined;
 
@@ -43,25 +50,9 @@ const createUser = async (req, res, next) => {
         status: 'success',
         newUser,
     });
-};
+});
 
-// const login = async (req, res, next) => {
-//     const { email, password } = req.body;
-
-//     const user = await User.findOne({
-//         where: {
-//             email,
-//             password
-//         },
-//     });
-
-//     res.status(200).json({
-//         status: 'success',
-//         user
-//     });
-// };
-
-const login = async (req, res, next) => {
+const login = catchAsync(async (req, res, next) => {
     const { usuario, password } = req.body;
     const user = await User.findOne({
         where: {
@@ -71,17 +62,23 @@ const login = async (req, res, next) => {
 
     if (!user) return next(new AppError('Invalid user', 400))
 
-    const isPasswordValid = await bcrypt.compare(password, user.PASSWORD);
-    console.log(isPasswordValid);
+    // const isPasswordValid = await bcrypt.compare(password, user.PASSWORD);
+    const isPasswordValid = user.PASSWORD === md5(password) ;
+    
     if (!isPasswordValid) return next(new AppError('Invalid password', 400))
+
+    const token = await jwt.sign({ id: user.IDPERSONAL }, process.env.JWT_SECRET, {
+        expiresIn: 30,
+    });
 
     res.status(200).json({
         status: 'success',
-        isPasswordValid,
+        token,
+        user
     });
-};
+});
 
-const getAllUsers = async (req, res, next) => {
+const getAllUsers = catchAsync(async (req, res, next) => {
 
     const users = await User.findAll();
 
@@ -90,7 +87,7 @@ const getAllUsers = async (req, res, next) => {
         users,
     });
 
-};
+});
 
 module.exports = {
     createUser,

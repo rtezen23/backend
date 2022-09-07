@@ -108,6 +108,8 @@ const User = db.define('personal', {
         type: DataTypes.STRING,
         allowNull: false,
     },
-});
+},
+    {freezeTableName: true}
+);
 
 module.exports = { User };

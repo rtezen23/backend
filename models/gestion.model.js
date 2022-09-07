@@ -92,6 +92,8 @@ const Gestion = db.define('gestion_tmk', {
           type: DataTypes.DATE,
           allowNull: false  
         },
-});
+},
+        {freezeTableName: true}
+);
 
 module.exports = { Gestion };
