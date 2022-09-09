@@ -1,0 +1,53 @@
+POST http://localhost:4000/api/v1/gestions
+Content-Type: application/json
+
+[
+    {
+        "fecha_tmk": "44207.24958333333",
+        "id": 102,
+        "IDENTIFICADOR": 7071015004,
+        "id_table": 65,
+        "IDEFECTO": 259,
+        "IDMOTIVO": 6,
+        "IDCONTACTO": 4,
+        "OBSERVACION": "0",
+        "IDTELEFONO": 0,
+        "IDDIRECCION": 0,
+        "IDPERSONAL": 1,
+        "NOMCONTACTO": "c1",
+        "PISOS": "1",
+        "PUERTA": "2",
+        "FACHADA": "4",
+        "fecha_asignacion": 44899.99958333333,
+        "fecha_analisis": "44899.99958333333",
+        "estado": "1",
+        "id_registro": 3088,
+        "fecha_promesa": "0000-00-00",
+        "monto_promesa": 0,
+        "fecha_programacion": "0000-00-00"
+    },
+    {
+        "id": 103,
+        "fecha_tmk": 44207.24958333333,
+        "IDENTIFICADOR": 7071015004,
+        "id_table": 65,
+        "IDEFECTO": 259,
+        "IDMOTIVO": 6,
+        "IDCONTACTO": 4,
+        "OBSERVACION": "0",
+        "IDTELEFONO": 0,
+        "IDDIRECCION": 0,
+        "IDPERSONAL": 1,
+        "NOMCONTACTO": "c1",
+        "PISOS": "1",
+        "PUERTA": "2",
+        "FACHADA": "4",
+        "fecha_asignacion": "44899.99958333333",
+        "fecha_analisis": "44899.99958333333",
+        "estado": "1",
+        "id_registro": 3088,
+        "fecha_promesa": "0000-00-00",
+        "monto_promesa": 0,
+        "fecha_programacion": "0000-00-00"
+    }
+]
