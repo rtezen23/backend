@@ -1,12 +1,12 @@
 const { db, DataTypes } = require('../utils/database.util');
 
 const Gestion = db.define('gestion_tmk', {
-    id: {
-        primaryKey: true,
-        type: DataTypes.INTEGER,
-        autoIncrement: true,
-        allowNull: false,
-        },
+    // id: {
+    //     primaryKey: true,
+    //     type: DataTypes.INTEGER,
+    //     autoIncrement: true,
+    //     allowNull: false,
+    //     },
         fecha_tmk: {
           type: DataTypes.DATE,
           allowNull: false  
