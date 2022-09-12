@@ -14,7 +14,6 @@ const User = db.define('personal', {
     NOMBRES: {
         type: DataTypes.STRING,
         allowNull: false,
-        unique: true,
     },
     FECHANAC: {
         type: DataTypes.DATE,

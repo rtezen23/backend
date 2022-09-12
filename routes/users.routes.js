@@ -6,6 +6,7 @@ const {
 	login,
 } = require('../controllers/users.controller.js');
 
+const { createUserValidators } = require('../middlewares/validators.middleware');
 const usersRouter = express.Router();
 
 usersRouter.get('/', getAllUsers);
