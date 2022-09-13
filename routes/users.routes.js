@@ -10,7 +10,7 @@ const { createUserValidators } = require('../middlewares/validators.middleware')
 const usersRouter = express.Router();
 
 usersRouter.get('/', getAllUsers);
-usersRouter.post('/signup', createUser);
+usersRouter.post('/signup', createUserValidators, createUser);
 usersRouter.post('/login', login);
 
 module.exports = { usersRouter };

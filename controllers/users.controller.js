@@ -54,6 +54,7 @@ const createUser = catchAsync(async (req, res, next) => {
 
 const login = catchAsync(async (req, res, next) => {
     const { usuario, password } = req.body;
+    
     const user = await User.findOne({
         where: {
             USUARIO: usuario,
@@ -70,7 +71,7 @@ const login = catchAsync(async (req, res, next) => {
     const token = await jwt.sign({ id: user.IDPERSONAL }, process.env.JWT_SECRET, {
         expiresIn: 30,
     });
-
+    
     res.status(200).json({
         status: 'success',
         token,
